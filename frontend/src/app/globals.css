@@ -1,0 +1,56 @@
+@import "tailwindcss";
+
+:root {
+  --background: #f8fafc;
+  --foreground: #1e293b;
+  --primary: #007A3D;
+  --primary-dark: #005a2c;
+  --gold: #C9A227;
+  --sidebar-width: 280px;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
+  direction: rtl;
+}
+
+/* RTL utilities */
+.flip-rtl {
+  transform: scaleX(-1);
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+::-webkit-scrollbar-thumb {
+  background: #94a3b8;
+  border-radius: 3px;
+}
+
+/* Status badge colors */
+.status-draft { @apply bg-gray-100 text-gray-700; }
+.status-submitted { @apply bg-blue-100 text-blue-700; }
+.status-registered { @apply bg-indigo-100 text-indigo-700; }
+.status-under_investigation { @apply bg-yellow-100 text-yellow-800; }
+.status-indictment_prep { @apply bg-orange-100 text-orange-700; }
+.status-referred_to_committee { @apply bg-purple-100 text-purple-700; }
+.status-sessions_ongoing { @apply bg-pink-100 text-pink-700; }
+.status-decision_issued { @apply bg-teal-100 text-teal-700; }
+.status-pending_minister { @apply bg-amber-100 text-amber-800; }
+.status-in_effect { @apply bg-green-100 text-green-700; }
+.status-appealed { @apply bg-red-100 text-red-700; }
+.status-executed { @apply bg-slate-100 text-slate-700; }
+.status-closed { @apply bg-gray-200 text-gray-600; }
+
+/* Severity colors */
+.severity-low { @apply bg-green-100 text-green-800; }
+.severity-medium { @apply bg-yellow-100 text-yellow-800; }
+.severity-high { @apply bg-orange-100 text-orange-800; }
+.severity-critical { @apply bg-red-100 text-red-800; }
