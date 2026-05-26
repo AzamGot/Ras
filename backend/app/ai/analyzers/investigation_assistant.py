@@ -68,7 +68,7 @@ async def generate_investigation_questions(
         }
     ]
 
-    result, usage = await call_ai_json(system, messages, max_tokens=3000)
+    result, usage = await call_ai_json(system, messages, max_tokens=6000)
     result["prompt_version"] = PROMPT_VERSION
     return result
 

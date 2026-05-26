@@ -3,7 +3,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.database import engine, Base
-from app.routers import auth, complaints, ai
+from app.routers import auth, complaints, ai, investigations, indictments, disciplinary
 
 
 @asynccontextmanager
@@ -35,6 +35,9 @@ app.add_middleware(
 # Routers
 app.include_router(auth.router, prefix="/api/v1")
 app.include_router(complaints.router, prefix="/api/v1")
+app.include_router(investigations.router, prefix="/api/v1")
+app.include_router(indictments.router, prefix="/api/v1")
+app.include_router(disciplinary.router, prefix="/api/v1")
 app.include_router(ai.router, prefix="/api/v1")
 
 

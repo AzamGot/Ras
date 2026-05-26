@@ -72,12 +72,32 @@ async def call_ai_json(
     Returns (parsed_dict, usage_info)
     """
     text, usage = await call_ai(system, messages, max_tokens)
-    # Extract JSON from response (handle markdown code blocks)
     text = text.strip()
+    # Strip markdown code fences
     if text.startswith("```"):
         lines = text.split("\n")
-        text = "\n".join(lines[1:-1])
-    parsed = json.loads(text)
+        text = "\n".join(lines[1:])
+        if text.endswith("```"):
+            text = text[: text.rfind("```")]
+        text = text.strip()
+    # Find the outermost JSON object
+    start = text.find("{")
+    end = text.rfind("}")
+    if start != -1 and end != -1:
+        text = text[start : end + 1]
+    try:
+        parsed = json.loads(text)
+    except json.JSONDecodeError:
+        # Attempt recovery: strip trailing incomplete array/object entries
+        for trim in [",\n", ",\r\n"]:
+            candidate = text[: text.rfind(trim)] if trim in text else text
+            for close in ["]}", "}\n}", "}}"]:
+                try:
+                    parsed = json.loads(candidate + close)
+                    return parsed, usage
+                except json.JSONDecodeError:
+                    pass
+        raise
     return parsed, usage
 
 
