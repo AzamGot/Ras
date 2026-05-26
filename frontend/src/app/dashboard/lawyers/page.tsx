@@ -1,6 +1,8 @@
 "use client";
 import { useEffect, useState } from "react";
 
+const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+
 const STATUS_COLORS: Record<string, string> = {
   active: "bg-green-100 text-green-800",
   suspended: "bg-yellow-100 text-yellow-800",
@@ -65,7 +67,7 @@ export default function LawyersPage() {
     const token = localStorage.getItem("access_token");
     if (!token) return;
 
-    fetch("/api/proxy/lawyers?size=50", {
+    fetch(`${API}/api/v1/lawyers?size=50`, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((r) => r.json())
@@ -85,7 +87,7 @@ export default function LawyersPage() {
     if (!token) return;
     setAnalyzing(lawyerId);
     try {
-      const r = await fetch(`/api/proxy/ai/lawyers/${lawyerId}/risk-score`, {
+      const r = await fetch(`${API}/api/v1/ai/lawyers/${lawyerId}/risk-score`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const d = await r.json();

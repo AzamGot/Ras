@@ -1,6 +1,8 @@
 "use client";
 import { useEffect, useState } from "react";
 
+const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+
 const STATUS_LABELS: Record<string, string> = {
   in_progress: "جارٍ",
   completed: "مكتمل",
@@ -23,7 +25,7 @@ export default function InvestigationsPage() {
     const token = localStorage.getItem("access_token");
     if (!token) return;
 
-    fetch("/api/proxy/investigations?size=50", {
+    fetch(`${API}/api/v1/investigations?size=50`, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((r) => r.json())

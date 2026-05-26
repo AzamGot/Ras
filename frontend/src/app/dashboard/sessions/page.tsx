@@ -1,6 +1,8 @@
 "use client";
 import { useEffect, useState } from "react";
 
+const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+
 const STATUS_LABELS: Record<string, string> = {
   scheduled: "مجدولة",
   in_progress: "جارية",
@@ -25,7 +27,7 @@ export default function SessionsPage() {
     const token = localStorage.getItem("access_token");
     if (!token) return;
 
-    fetch("/api/proxy/disciplinary/sessions?size=50", {
+    fetch(`${API}/api/v1/disciplinary/sessions?size=50`, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((r) => r.json())

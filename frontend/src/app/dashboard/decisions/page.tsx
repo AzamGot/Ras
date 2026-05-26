@@ -1,6 +1,8 @@
 "use client";
 import { useEffect, useState } from "react";
 
+const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+
 const STATUS_LABELS: Record<string, string> = {
   draft: "مسودة",
   signed: "موقّع",
@@ -40,7 +42,7 @@ export default function DecisionsPage() {
     const token = localStorage.getItem("access_token");
     if (!token) return;
 
-    fetch("/api/proxy/disciplinary/decisions?size=50", {
+    fetch(`${API}/api/v1/disciplinary/decisions?size=50`, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((r) => r.json())
