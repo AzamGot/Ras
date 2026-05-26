@@ -7,6 +7,8 @@ const navItems = [
   { href: "/dashboard", label: "الرئيسية", icon: "🏠", roles: ["all"] },
   { href: "/dashboard/complaints", label: "الشكاوى", icon: "📋", roles: ["all"] },
   { href: "/dashboard/complaints/new", label: "شكوى جديدة", icon: "➕", roles: ["complainant"] },
+  { href: "/dashboard/investigations", label: "سجلات التحقيق", icon: "🔍", roles: ["admin", "investigator", "prosecutor"] },
+  { href: "/dashboard/indictments", label: "لوائح الادعاء", icon: "📄", roles: ["admin", "prosecutor", "committee_member", "committee_chair"] },
   { href: "/dashboard/lawyers", label: "سجل المحامين", icon: "👥", roles: ["admin", "investigator", "prosecutor", "committee_member", "committee_chair"] },
   { href: "/dashboard/sessions", label: "جلسات التأديب", icon: "⚖️", roles: ["admin", "committee_member", "committee_chair"] },
   { href: "/dashboard/decisions", label: "القرارات", icon: "📜", roles: ["admin", "committee_member", "committee_chair", "executor"] },

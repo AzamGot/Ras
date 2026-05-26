@@ -1,5 +1,5 @@
 from datetime import datetime, timezone
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 
@@ -9,6 +9,7 @@ from app.schemas.auth import LoginRequest, RegisterRequest, TokenResponse, Refre
 from app.schemas.user import UserMe
 from app.core.security import hash_password, verify_password, create_access_token, create_refresh_token, decode_token
 from app.dependencies import get_current_user
+from app.core.permissions import ADMIN
 
 router = APIRouter(prefix="/auth", tags=["المصادقة"])
 
@@ -87,3 +88,20 @@ async def refresh_token(data: RefreshRequest, db: AsyncSession = Depends(get_db)
 @router.get("/me", response_model=UserMe)
 async def get_me(current_user: User = Depends(get_current_user)):
     return current_user
+
+
+@router.get("/users", response_model=list)
+async def list_users(
+    role: str | None = Query(None),
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    """قائمة المستخدمين — للمشرف فقط"""
+    if current_user.role != ADMIN:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="غير مصرح")
+    q = select(User).where(User.is_active == True)
+    if role:
+        q = q.where(User.role == role)
+    result = await db.execute(q)
+    users = result.scalars().all()
+    return [{"id": str(u.id), "full_name_ar": u.full_name_ar, "role": u.role, "email": u.email} for u in users]
