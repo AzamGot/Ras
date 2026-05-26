@@ -7,12 +7,24 @@ class LoginRequest(BaseModel):
     password: str
 
 
+VALID_ROLES = ["complainant", "lawyer", "investigator", "prosecutor",
+               "committee_member", "committee_chair", "executor", "admin"]
+
+
 class RegisterRequest(BaseModel):
     national_id: str
     full_name_ar: str
     email: EmailStr
     phone: str
     password: str
+    role: str = "complainant"
+
+    @field_validator("role")
+    @classmethod
+    def validate_role(cls, v: str) -> str:
+        if v not in VALID_ROLES:
+            raise ValueError(f"الدور غير صالح. القيم المتاحة: {', '.join(VALID_ROLES)}")
+        return v
 
     @field_validator("national_id")
     @classmethod
